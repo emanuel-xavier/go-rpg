@@ -16,7 +16,8 @@ type Sprite struct {
 
 type Player struct {
 	*Sprite
-	Speed float64
+	Health uint
+	Speed  float64
 }
 
 func (p *Player) MoveUp() { p.Y -= p.Speed }
@@ -157,7 +158,8 @@ func main() {
 				Y:   0,
 				Img: playerImg,
 			},
-			Speed: 2,
+			Speed:  2,
+			Health: 100,
 		},
 		Enemies: []*Enemy{
 			&Enemy{
