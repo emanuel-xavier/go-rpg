@@ -50,9 +50,15 @@ func (e *Enemy) Move(playerX, playerY float64) {
 
 }
 
+type Potion struct {
+	*Sprite
+	AmtHeal float64
+}
+
 type Game struct {
 	Player  Player
 	Enemies []*Enemy
+	Potions []*Potion
 }
 
 func (g *Game) Update() error {
@@ -103,6 +109,20 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 		opts.GeoM.Reset()
 	}
+
+	// Draw potions
+	opts.GeoM.Reset()
+	for _, potion := range g.Potions {
+		opts.GeoM.Translate(potion.X, potion.Y)
+		screen.DrawImage(
+			potion.Img.SubImage(
+				image.Rect(0, 0, 16, 16),
+			).(*ebiten.Image),
+			&opts,
+		)
+
+		opts.GeoM.Reset()
+	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeithg int) {
@@ -121,6 +141,11 @@ func main() {
 	}
 
 	pandaImg, _, err := ebitenutil.NewImageFromFile("./assets/images/Panda/SpriteSheet.png")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	potionImg, _, err := ebitenutil.NewImageFromFile("./assets/images/Potion/LifePot.png")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -151,6 +176,16 @@ func main() {
 					Img: pandaImg,
 				},
 				Speed: 1.0,
+			},
+		},
+		Potions: []*Potion{
+			&Potion{
+				Sprite: &Sprite{
+					X:   200,
+					Y:   150,
+					Img: potionImg,
+				},
+				AmtHeal: 1.0,
 			},
 		},
 	}
