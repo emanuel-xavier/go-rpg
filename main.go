@@ -57,9 +57,11 @@ type Potion struct {
 }
 
 type Game struct {
-	Player  Player
-	Enemies []*Enemy
-	Potions []*Potion
+	Player      *Player
+	Enemies     []*Enemy
+	Potions     []*Potion
+	TilemapJSON *TilemapJSON
+	TilemapImg  *ebiten.Image
 }
 
 func (g *Game) Update() error {
@@ -87,6 +89,29 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{120, 180, 255, 255})
 
 	opts := ebiten.DrawImageOptions{}
+
+	for _, layer := range g.TilemapJSON.Layers {
+		for index, id := range layer.Data {
+			x := index % layer.Width
+			y := index / layer.Width
+
+			x *= 16
+			y *= 16
+
+			srcX := (id - 1) % 22
+			srcY := (id - 1) / 22
+
+			opts.GeoM.Translate(float64(x), float64(y))
+
+			screen.DrawImage(
+				g.TilemapImg.SubImage(image.Rect(srcX, srcY, srcX+16, srcY+16)).(*ebiten.Image),
+				&opts,
+			)
+
+			opts.GeoM.Reset()
+		}
+	}
+
 	opts.GeoM.Translate(g.Player.X, g.Player.Y)
 
 	// draw the player
@@ -126,7 +151,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	}
 }
 
-func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeithg int) {
+func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
 	return 320, 240
 	// return ebiten.WindowSize()
 }
@@ -151,8 +176,20 @@ func main() {
 		log.Fatal(err)
 	}
 
+	tileMapJson, err := NewTileMapJSON("./assets/maps/spawn.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	tilemapImg, _, err := ebitenutil.NewImageFromFile("./assets/images/tilesets/TilesetFloor.png")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	game := &Game{
-		Player: Player{
+		TilemapJSON: tileMapJson,
+		TilemapImg:  tilemapImg,
+		Player: &Player{
 			Sprite: &Sprite{
 				X:   0,
 				Y:   0,
