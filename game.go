@@ -8,6 +8,11 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
+const (
+	SCREEN_WIDTH  = 320.0
+	SCREEN_HEIGHT = 240.0
+)
+
 type Game struct {
 	Player      *entities.Player
 	Enemies     []*entities.Enemy
@@ -35,13 +40,13 @@ func (g *Game) Update() error {
 		enemy.Move(g.Player.X, g.Player.Y)
 	}
 
-	g.Cam.FollowTarget(g.Player.X, g.Player.Y, 320, 240)
+	g.Cam.FollowTarget(g.Player.X, g.Player.Y, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 	g.Cam.Constrain(
 		float64(g.TilemapJSON.Layers[0].Width*16),
 		float64(g.TilemapJSON.Layers[0].Height*16),
-		320,
-		240,
+		SCREEN_WIDTH,
+		SCREEN_HEIGHT,
 	)
 
 	return nil
@@ -87,40 +92,50 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		&opts,
 	)
 
-	// Draw others sprites
+	// Draw enemies
 	opts.GeoM.Reset()
 	for _, enemy := range g.Enemies {
-		opts.GeoM.Translate(enemy.X, enemy.Y)
-		opts.GeoM.Translate(g.Cam.X, g.Cam.Y)
+		enemyX := enemy.X
+		enemyY := enemy.Y
 
-		screen.DrawImage(
-			enemy.Img.SubImage(
-				image.Rect(0, 0, 16, 16),
-			).(*ebiten.Image),
-			&opts,
-		)
+		if enemyX+16 >= -g.Cam.X && enemyX <= -g.Cam.X+SCREEN_WIDTH && enemyY+16 >= -g.Cam.Y && enemyY <= -g.Cam.Y+SCREEN_HEIGHT {
+			opts.GeoM.Translate(enemyX, enemyY)
+			opts.GeoM.Translate(g.Cam.X, g.Cam.Y)
 
-		opts.GeoM.Reset()
+			screen.DrawImage(
+				enemy.Img.SubImage(
+					image.Rect(0, 0, 16, 16),
+				).(*ebiten.Image),
+				&opts,
+			)
+
+			opts.GeoM.Reset()
+		}
 	}
 
 	// Draw potions
 	opts.GeoM.Reset()
 	for _, potion := range g.Potions {
-		opts.GeoM.Translate(potion.X, potion.Y)
-		opts.GeoM.Translate(g.Cam.X, g.Cam.Y)
+		potionX := potion.X
+		potionY := potion.Y
 
-		screen.DrawImage(
-			potion.Img.SubImage(
-				image.Rect(0, 0, 16, 16),
-			).(*ebiten.Image),
-			&opts,
-		)
+		if potionX+16 >= -g.Cam.X && potionX <= -g.Cam.X+SCREEN_WIDTH && potionY+16 >= -g.Cam.Y && potionY <= -g.Cam.Y+SCREEN_HEIGHT {
+			opts.GeoM.Translate(potionX, potionY)
+			opts.GeoM.Translate(g.Cam.X, g.Cam.Y)
 
-		opts.GeoM.Reset()
+			screen.DrawImage(
+				potion.Img.SubImage(
+					image.Rect(0, 0, 16, 16),
+				).(*ebiten.Image),
+				&opts,
+			)
+
+			opts.GeoM.Reset()
+		}
 	}
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return 320, 240
+	return SCREEN_WIDTH, SCREEN_HEIGHT
 	// return ebiten.WindowSize()
 }
