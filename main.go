@@ -1,6 +1,7 @@
 package main
 
 import (
+	"go-rpg/entities"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -40,8 +41,8 @@ func main() {
 	game := &Game{
 		TilemapJSON: tileMapJson,
 		TilemapImg:  tilemapImg,
-		Player: &Player{
-			Sprite: &Sprite{
+		Player: &entities.Player{
+			Sprite: &entities.Sprite{
 				X:   0,
 				Y:   0,
 				Img: playerImg,
@@ -49,18 +50,18 @@ func main() {
 			Speed:  2,
 			Health: 100,
 		},
-		Enemies: []*Enemy{
-			&Enemy{
-				Sprite: &Sprite{
+		Enemies: []*entities.Enemy{
+			&entities.Enemy{
+				Sprite: &entities.Sprite{
 					X:   50,
 					Y:   50,
 					Img: pandaImg,
 				},
 				Speed: 1.5,
 			},
-			&Enemy{
+			&entities.Enemy{
 				FollowsPlayer: true,
-				Sprite: &Sprite{
+				Sprite: &entities.Sprite{
 					X:   100,
 					Y:   50,
 					Img: pandaImg,
@@ -68,9 +69,9 @@ func main() {
 				Speed: 1.0,
 			},
 		},
-		Potions: []*Potion{
-			&Potion{
-				Sprite: &Sprite{
+		Potions: []*entities.Potion{
+			&entities.Potion{
+				Sprite: &entities.Sprite{
 					X:   200,
 					Y:   150,
 					Img: potionImg,

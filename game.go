@@ -1,6 +1,7 @@
 package main
 
 import (
+	"go-rpg/entities"
 	"image"
 	"image/color"
 
@@ -8,9 +9,9 @@ import (
 )
 
 type Game struct {
-	Player      *Player
-	Enemies     []*Enemy
-	Potions     []*Potion
+	Player      *entities.Player
+	Enemies     []*entities.Enemy
+	Potions     []*entities.Potion
 	TilemapJSON *TilemapJSON
 	TilemapImg  *ebiten.Image
 }
