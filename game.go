@@ -59,14 +59,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	for _, layer := range g.TilemapJSON.Layers {
 		for index, id := range layer.Data {
-			x := index % layer.Width
-			y := index / layer.Width
+			x := (index % layer.Width) * 16
+			y := (index / layer.Width) * 16
 
-			x *= 16
-			y *= 16
-
-			srcX := (id - 1) % 22
-			srcY := (id - 1) / 22
+			srcX := ((id - 1) % 22) * 16
+			srcY := ((id - 1) / 22) * 16
 
 			opts.GeoM.Translate(float64(x), float64(y))
 
