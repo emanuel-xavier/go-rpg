@@ -15,32 +15,38 @@ func main() {
 
 	playerImg, _, err := ebitenutil.NewImageFromFile("./assets/images/Noble/SpriteSheet.png")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("load noble sprint", err)
 	}
 
 	pandaImg, _, err := ebitenutil.NewImageFromFile("./assets/images/Panda/SpriteSheet.png")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("load panda sprite", err)
 	}
 
 	potionImg, _, err := ebitenutil.NewImageFromFile("./assets/images/Potion/LifePot.png")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("load pot img", err)
 	}
 
 	tileMapJson, err := NewTileMapJSON("./assets/maps/spawn.json")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("newMapJson", err)
+	}
+
+	tilesets, err := tileMapJson.GenTilesets()
+	if err != nil {
+		log.Fatal("genTilesets", err)
 	}
 
 	tilemapImg, _, err := ebitenutil.NewImageFromFile("./assets/images/tilesets/TilesetFloor.png")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("load tilesetFlor", err)
 	}
 
 	game := &Game{
 		TilemapJSON: tileMapJson,
 		TilemapImg:  tilemapImg,
+		TileSets:    tilesets,
 		Player: &entities.Player{
 			Sprite: &entities.Sprite{
 				X:   0,
@@ -83,7 +89,7 @@ func main() {
 	}
 
 	if err := ebiten.RunGame(game); err != nil {
-		log.Fatal(err)
+		log.Fatal("Run game:", err)
 	}
 
 }
