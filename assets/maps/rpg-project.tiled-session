@@ -5,10 +5,46 @@
     },
     "activeFile": "",
     "expandedProjectPaths": [
+        "tilesets",
+        "."
     ],
+    "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "spawn.json": {
+            "scale": 1.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 219.66666666666663,
+                "y": 211.66666666666666
+            }
+        },
+        "tilesets/Buildings.json": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 3
+        },
+        "tilesets/TilesetFloor.json": {
+            "dynamicWrapping": false,
+            "scale": 0.5,
+            "scaleInDock": 1,
+            "scaleInEditor": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 559,
+                "y": 837
+            }
+        },
+        "tilesets/TilesetFloor.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tilesets/buildings.json": {
+            "scaleInDock": 1
+        }
     },
-    "last.imagePath": "/home/emanuel/Projects/go-rpg/assets/images/tilesets",
+    "last.externalTilesetPath": "/home/emanuel/Projects/go-rpg/assets/maps/tilesets",
+    "last.imagePath": "/home/emanuel/Projects/go-rpg/assets/images/buildings",
     "map.height": 80,
     "map.lastUsedFormat": "json",
     "map.tileHeight": 16,
@@ -18,10 +54,16 @@
     ],
     "project": "rpg-project.tiled-project",
     "recentFiles": [
+        "spawn.json",
+        "tilesets/Buildings.json",
+        "tilesets/TilesetFloor.json",
+        "tilesets/TilesetFloor.tsx"
     ],
-    "tileset.lastUsedFormat": "tsx",
+    "tileset.lastUsedFilter": "JSON tileset files (*.tsj *.json)",
+    "tileset.lastUsedFormat": "json",
     "tileset.tileSize": {
         "height": 16,
         "width": 16
-    }
+    },
+    "tileset.type": 1
 }
